@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        const handleResponse = (response) => {
+
+            response.text().then(responseText => {
+                const content = document.querySelector('#content');
+
+                const h1 = document.createElement('h1');
+                const p = document.createElement('p');
+
+                // switch (response.status) {
+                //     case 200:
+                //         h1.innerText = 'Success';
+                //         p.innerText = responseText;
+                //         break;
+                //     case 201:
+                //         h1.innerText = 'Created';
+                //         p.innerText = `Message: ${JSON.parse(responseText).message}`;
+                //         break;
+                //     case 204:
+                //         h1.innerText = 'Updated (No Content)';
+                //         break;
+                //     case 400:
+                //         h1.innerText = 'Bad Request';
+                //         p.innerText = `Message: ${JSON.parse(responseText).message}`;
+                //         break;
+                //     case 404:
+                //         h1.innerText = 'Not Found';
+                //         if (responseText)
+                //             p.innerText = `Message: ${JSON.parse(responseText).message}`;
+                //         break;
+                //     default:
+                //         h1.innerText = 'Not Sure';
+                //         break;
+                // }
+
+                h1.innerText = 'Data';
+                p.innerText = `${responseText}`;
+
+                content.innerHTML = "";
+                content.appendChild(h1);
+                content.appendChild(p);
+
+                if (responseText)
+                    console.log(JSON.parse(responseText));
+            });
+        };
+
+        const sendPost = async (url, data) => {
+            const fetchPromise = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: data,
+            });
+
+            handleResponse(fetchPromise);
+        };
+
+        const sendGet = async (url) => {
+            const fetchPromise = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            handleResponse(fetchPromise);
+        };
+
+        const sendHead = async (url) => {
+            const fetchPromise = await fetch(url, {
+                method: 'HEAD',
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            handleResponse(fetchPromise);
+        };
+
+        const init = () => {
+
+            sendGet('getAll');
+        }
+
+        window.onload = init;
+    </script>
+</head>
+
+<body>
+
+    <div id="content">
+
+    </div>
+</body>
+
+</html>
