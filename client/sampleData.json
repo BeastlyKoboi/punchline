@@ -1,0 +1,25 @@
+{
+    "data": {
+        "users": {
+            "username": {
+                "liked": []
+            }
+        },
+        "prompts": [
+            {
+                "thisisakey": {
+                    "text": "",
+                    "tags": [],
+                    "answers": [
+                        {
+                            "text": "",
+                            "likes": 0,
+                            "createdBy": ""
+                        }
+                    ],
+                    "createdBy": ""
+                }
+            }
+        ]
+    }
+}

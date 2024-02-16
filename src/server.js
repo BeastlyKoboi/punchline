@@ -14,8 +14,10 @@ const urlStruct = {
     '/': htmlHandler.getIndex,
     '/index': htmlHandler.getIndex,
     '/style.css': htmlHandler.getIndexCSS,
-    '/error.jpeg': mediaHandler.getErrorMeme,
     '/notFound': htmlHandler.getNotFound,
+    '/notFound.css': htmlHandler.getNotFoundCSS,
+    '/bulma.css': htmlHandler.getBulma,
+    '/error.jpeg': mediaHandler.getErrorMeme,
     '/getAll': jsonHandler.getAll,
   },
   HEAD: {
@@ -25,6 +27,30 @@ const urlStruct = {
 
   },
 };
+
+// const parseBody = (request, response, handler) => {
+//   const body = [];
+
+//   request.on('error', (err) => {
+//     console.dir(err);
+
+//     response.statusCode = 400;
+//     response.end();
+//   });
+
+//   request.on('data', (chunk) => {
+//     body.push(chunk);
+//   });
+
+//   request.on('end', () => {
+//     // application/x-www-form-urlencoded
+//     const bodyString = Buffer.concat(body).toString();
+//     const bodyParams = JSON.parse(bodyString);
+
+//     // console.log(bodyParams);
+//     handler(request, response, bodyParams);
+//   });
+// };
 
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);

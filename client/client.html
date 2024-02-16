@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Punchline!</title>
 
+    <link rel="stylesheet" href="./bulma.css">
+    <link rel="stylesheet" href="./style.css">
     <script>
         const handleResponse = (response) => {
 
             response.text().then(responseText => {
-                const content = document.querySelector('#content');
+                const content = document.querySelector('#data');
 
                 const h1 = document.createElement('h1');
                 const p = document.createElement('p');
@@ -90,6 +92,15 @@
 
         const init = () => {
 
+
+            document.querySelector('.navbar-burger').addEventListener('click', (e) => {
+                let burger = e.target;
+                let nav = document.querySelector('#navbarHeader');
+                burger.classList.toggle('is-active');
+                nav.classList.toggle('is-active');
+            })
+
+
             sendGet('getAll');
         }
 
@@ -98,10 +109,137 @@
 </head>
 
 <body>
+    <div>
+        <nav class="navbar is-warning" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="./">
+                    <!-- <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28"> -->
+                    <h1 class="title">Punch ... LINE!</h1>
 
-    <div id="content">
+                </a>
 
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarHeader">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarHeader" class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-item select is-flex is-align-self-center ">
+                        <select>
+                            <option>All</option>
+                            <option>Pick Up Lines</option>
+                            <option>Outrageous Insults</option>
+                            <option>So You Got Jokes</option>
+                            <option>CHUCK NORRIS</option>
+                            <option>Historical Quotes</option>
+                        </select>
+                    </div>
+                    <div class="navbar-item select is-flex is-align-self-center ">
+                        <select>
+                            <option>Select dropdown</option>
+                            <option>With options</option>
+                        </select>
+                    </div>
+                    <!-- 
+            <a class="navbar-item">
+              Home
+            </a>
+      
+            <a class="navbar-item">
+              Documentation
+            </a>
+        -->
+                    <!-- <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            More
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                About
+                            </a>
+                            <a class="navbar-item">
+                                Jobs
+                            </a>
+                            <a class="navbar-item">
+                                Contact
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                                Report an issue
+                            </a>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <input class="input is-rounded is-danger" type="text" placeholder="Username">
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <div id="data">
+            
+        </div>
+
+        <div id="prompt-cards">
+            <div class="card">
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-left">
+                      <figure class="image is-48x48">
+                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="media-content">
+                      <p class="title is-4">Tags</p>
+                      <p class="subtitle is-6">Username</p>
+                    </div>
+                  </div>
+              
+                  <div class="content">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus nec iaculis mauris.<a>@bulmaio</a>.
+                    <a href="#">#css</a> <a href="#">#responsive</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-left">
+                      <figure class="image is-48x48">
+                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="media-content">
+                      <p class="title is-4">Tags</p>
+                      <p class="subtitle is-6">Username</p>
+                    </div>
+                  </div>
+              
+                  <div class="content">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Phasellus nec iaculis mauris. <a>@bulmaio</a>.
+                    <a href="#">#css</a> <a href="#">#responsive</a>
+                  </div>
+                </div>
+              </div>
+
+              
+        </div>
     </div>
+
 </body>
 
 </html>

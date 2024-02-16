@@ -35,7 +35,6 @@ const getAll = async () => {
   //     allData = snapshot.val();
   //   });
   const allData = (await ref.once('value')).val();
-  console.log('In firebase getAll: ', allData);
 
   return allData;
 };
