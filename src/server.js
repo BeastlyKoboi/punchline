@@ -1,4 +1,5 @@
 const http = require('http');
+const query = require('querystring');
 const url = require('url');
 const htmlHandler = require('./htmlResponses.js');
 const jsonHandler = require('./jsonResponses.js');
@@ -6,65 +7,88 @@ const mediaHandler = require('./mediaResponses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
+// Struct that holds the function to run according to the path
 const urlStruct = {
   GET: {
+    // HTML pages
     '/': htmlHandler.getIndex,
     '/index': htmlHandler.getIndex,
-    '/style.css': htmlHandler.getIndexCSS,
     '/notFound': htmlHandler.getNotFound,
-    '/notFound.css': htmlHandler.getNotFoundCSS,
+
+    // CSS files
     '/bulma.css': htmlHandler.getBulma,
-    '/error.jpeg': mediaHandler.getErrorMeme,
+    '/style.css': htmlHandler.getIndexCSS,
+    '/notFound.css': htmlHandler.getNotFoundCSS,
+
+    // Javascript files
+    '/requests.js': htmlHandler.getRequestsJS,
+    '/prompts.js': htmlHandler.getPromptsJS,
+
+    // JSON or Firebase Requests
     '/getAll': jsonHandler.getAll,
+    '/getUser': jsonHandler.getUser,   //
+    // '/getPrompts': ,//
+    // '/getPrompt': , //
+
+    // Other files
+    '/error.jpeg': mediaHandler.getErrorMeme,
   },
   HEAD: {
+    '/getUser': jsonHandler.getUserHEAD,   //
 
   },
   POST: {
-
+    '/addUser': jsonHandler.addUser,   // 201 with 400 if user exists
+    // '/addPrompt': , // 201 with 400 if not all parameters given
+    // '/addAnswer': , // 201 with 400 if prompt does not exist
   },
 };
 
-// const parseBody = (request, response, handler) => {
-//   const body = [];
+const parseBody = (request, response, handler) => {
+  const body = [];
 
-//   request.on('error', (err) => {
-//     console.dir(err);
+  request.on('error', (err) => {
+    console.dir(err);
 
-//     response.statusCode = 400;
-//     response.end();
-//   });
+    response.statusCode = 400;
+    response.end();
+  });
 
-//   request.on('data', (chunk) => {
-//     body.push(chunk);
-//   });
+  request.on('data', (chunk) => {
+    body.push(chunk);
+  });
 
-//   request.on('end', () => {
-//     // application/x-www-form-urlencoded
-//     const bodyString = Buffer.concat(body).toString();
-//     const bodyParams = JSON.parse(bodyString);
+  request.on('end', () => {
+    // application/x-www-form-urlencoded
+    const bodyString = Buffer.concat(body).toString();
+    const bodyParams = JSON.parse(bodyString);
 
-//     // console.log(bodyParams);
-//     handler(request, response, bodyParams);
-//   });
-// };
+    // console.log(bodyParams);
+    handler(request, response, bodyParams);
+  });
+};
 
+/**
+ * Handles all requests that come in and routes them
+ * @param {*} request 
+ * @param {*} response 
+ */
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
   // const parsedUrl = new URL(`www.example.com${request.url}`);
   //   console.log(parsedUrl);
+  // console.log(parsedUrl.pathname);
 
   const method = urlStruct[request.method];
   const handler = method[parsedUrl.pathname];
+  const params = query.parse(parsedUrl.query);
 
-  //   if (request.method === 'POST') {
 
-  //   } else
-  if (handler) {
-    handler(request, response);
+  if (request.method === 'POST') {
+    parseBody(request, response, handler);
+  }
+  else if (handler) {
+    handler(request, response, params);
   } else {
     urlStruct.GET['/notFound'](request, response);
   }

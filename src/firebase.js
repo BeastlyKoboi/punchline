@@ -24,6 +24,7 @@ admin.initializeApp({
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 const db = admin.database();
 const ref = db.ref('data');
+const usersRef = db.ref('data/users');
 
 const saveData = () => {
 
@@ -39,7 +40,47 @@ const getAll = async () => {
   return allData;
 };
 
+
+const getUsername = async (username) => {
+  const snapshot = (await usersRef.once('value'));
+
+  if (snapshot.child(`${username}`).exists())
+    return snapshot.child(`${username}`).val();
+
+  return null;
+};
+
+const addUsername = async (username) => {
+  usersRef.child(`${username}`).set({
+    liked: "",
+    promptsCreated: "",
+    promptsAnswered: "",
+  });
+
+  return JSON.stringify((await usersRef.once('value')).child(`${username}`).val());
+};
+
+// const addPrompt = async () => {
+
+// };
+
+// const addAnswer = async () => {
+
+// };
+
+// const getPrompts = async () => {
+
+// };
+
+// const getAnswersToPrompt = async () => {
+
+// };
+
+
+
 module.exports = {
   saveData,
   getAll,
+  getUsername,
+  addUsername,
 };

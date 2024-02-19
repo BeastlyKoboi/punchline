@@ -2,22 +2,30 @@
     "data": {
         "users": {
             "username": {
-                "liked": []
+                "liked": [],
+                "promptsCreated": [],
+                "promptsAnswered": []
             }
+
         },
         "prompts": [
             {
                 "thisisakey": {
-                    "text": "",
-                    "tags": [],
+                    "text": "this is the setup for a joke,",
+                    "tags": ["CHUCK NORRIS"],
                     "answers": [
                         {
-                            "text": "",
-                            "likes": 0,
-                            "createdBy": ""
+                            "text": "This is one punchline",
+                            "likes": 3,
+                            "createdBy": "useruno"
+                        },
+                        {
+                            "text": "This is another punchline",
+                            "likes": 1,
+                            "createdBy": "userdeux"
                         }
                     ],
-                    "createdBy": ""
+                    "createdBy": "userzero"
                 }
             }
         ]

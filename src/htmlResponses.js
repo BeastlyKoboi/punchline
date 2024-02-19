@@ -1,11 +1,14 @@
 const fs = require('fs'); // pull in the file system module
 const utils = require('./utils.js');
 
-const index = fs.readFileSync(`${__dirname}/../client/client.html`);
-const indexCSS = fs.readFileSync(`${__dirname}/../client/style.css`);
+const index = fs.readFileSync(`${__dirname}/../client/promptsPage.html`);
+const indexCSS = fs.readFileSync(`${__dirname}/../client/css/style.css`);
 const notFoundPage = fs.readFileSync(`${__dirname}/../client/notFound.html`);
-const notFoundCSS = fs.readFileSync(`${__dirname}/../client/notFound.css`);
+const notFoundCSS = fs.readFileSync(`${__dirname}/../client/css/notFound.css`);
 const bulma = fs.readFileSync(`${__dirname}/../node_modules/bulma/css/bulma.css`);
+
+const requestsJS = fs.readFileSync(`${__dirname}/../client/js/requests.js`);
+const promptsJS = fs.readFileSync(`${__dirname}/../client/js/prompts.js`);
 
 const getIndex = (request, response) => {
   utils.respond(request, response, 200, index, 'text/html');
@@ -27,10 +30,20 @@ const getBulma = (request, response) => {
   utils.respond(request, response, 200, bulma, 'text/css');
 };
 
+const getRequestsJS = (request, response) => {
+  utils.respond(request, response, 200, requestsJS, 'application/javascript');
+};
+
+const getPromptsJS = (request, response) => {
+  utils.respond(request, response, 200, promptsJS, 'application/javascript');
+};
+
 module.exports = {
   getIndex,
   getIndexCSS,
   getNotFound,
   getNotFoundCSS,
   getBulma,
+  getRequestsJS,
+  getPromptsJS,
 };
