@@ -61,7 +61,7 @@
 
         <div id="prompt-cards">
 
-            <div class="card">
+            <div id="add-prompt-card" class="card">
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
@@ -85,7 +85,7 @@
                 </div>
 
                 <footer class="card-footer">
-                    <button class="button card-footer-item">Submit</button>
+                    <button id="add-prompt-btn" class="button card-footer-item">Submit</button>
                 </footer>
             </div>
 
@@ -95,8 +95,10 @@
                 <div class="card-content">
                     <div class="content">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-                        <a href="#">#css</a> <a href="#">#responsive</a>
+                        Phasellus nec iaculis mauris...
+                    </div>
+                    <div class="content has-text-centered">
+                        <span class="tag is-large is-danger">No Answers... Yet</span>
                     </div>
 
                     <div class="media">
@@ -121,6 +123,37 @@
                 </footer>
             </div>
 
+            <div class="card">
+                <div class="card-content">
+                    <div class="content">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Yup this is the setup for something...
+                    </div>
+                    <div class="content">
+                        This is the highest rated answer!
+                    </div>
+
+                    <div class="media">
+                        <div class="media-content">
+                            <span class="tag is-6 is-danger">Tags</span>
+                        </div>
+                        <div class="media-right has-text-right">
+                            <!-- <figure class="image is-48x48">
+                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                            </figure> -->
+                            <p class="subtitle is-6">By Username</p>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="card-footer">
+                    <button class="button is-large card-footer-item">
+                        <span class="icon">
+                            <i class="fa-regular fa-heart"></i>
+                        </span>
+                    </button>
+                </footer>
+            </div>
 
 
 

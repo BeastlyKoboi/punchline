@@ -51,6 +51,17 @@ const handleResponse = (response) => {
     });
 };
 
+const createCard = () => {
+
+};
+
+const refreshPage = async () => {
+    // requests.sendGet('./getAll', handleResponse);
+
+
+};
+
+
 const changeCurrentUsername = async (newUsername) => {
 
     const getResponse = await requests.sendGet('./getUser?' + new URLSearchParams({
@@ -68,10 +79,27 @@ const changeCurrentUsername = async (newUsername) => {
         }));
         currUserInfo = await postResponse.text();
     }
-    
+
 
     console.log(currUserInfo);
-}
+};
+
+const addPrompt = async (e) => {
+    let newPromptCard = document.getElementById('add-prompt-card');
+
+    let tag = newPromptCard.querySelector('select').value;
+    let text = newPromptCard.querySelector('textarea').value;
+
+    if (!tag || !text || !currUsername)
+        return;
+
+    await requests.sendPost('./addPrompt', null, JSON.stringify({
+        text: text,
+        tags: [tag],
+        createdBy: currUsername,
+    }));
+
+};
 
 const init = () => {
 
@@ -106,6 +134,9 @@ const init = () => {
     //   foo: 'value',
     //   bar: 2,
     // }))
+
+    let addPromptBtn = document.getElementById('add-prompt-btn');
+    addPromptBtn.addEventListener('click', addPrompt);
 
     requests.sendGet('./getAll', handleResponse);
 }

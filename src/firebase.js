@@ -25,10 +25,16 @@ admin.initializeApp({
 const db = admin.database();
 const ref = db.ref('data');
 const usersRef = db.ref('data/users');
+const promptRef = db.ref('data/prompts');
 
-const saveData = () => {
+// Intend to make current implemented functions use this method (on)
+// instead of calling firebase
+// let usersSnapshot;
 
-};
+// usersRef.on('value', (snapshot) => {
+//   usersSnapshot = snapshot.val();
+//   console.log('New Users SNAPSHOT');
+// });
 
 const getAll = async () => {
   //   ref.once('value', (snapshot) => {
@@ -40,29 +46,49 @@ const getAll = async () => {
   return allData;
 };
 
-
 const getUsername = async (username) => {
   const snapshot = (await usersRef.once('value'));
 
-  if (snapshot.child(`${username}`).exists())
-    return snapshot.child(`${username}`).val();
+  if (snapshot.child(`${username}`).exists()) return snapshot.child(`${username}`).val();
 
   return null;
 };
 
+// unimplemented
+// const getPrompts = async () => {
+//   const snapshot = (await promptRef.once('value'));
+// };
+
 const addUsername = async (username) => {
   usersRef.child(`${username}`).set({
-    liked: "",
-    promptsCreated: "",
-    promptsAnswered: "",
+    liked: '',
+    promptsCreated: '',
+    promptsAnswered: '',
   });
 
   return JSON.stringify((await usersRef.once('value')).child(`${username}`).val());
 };
 
-// const addPrompt = async () => {
+const addPrompt = async (text, tags, username) => {
+  const newPromptRef = promptRef.push();
 
-// };
+  newPromptRef.set({
+    text,
+    tags: '',
+    answers: '',
+    createdBy: username,
+  });
+  // needs text, tags, and username
+
+  tags.forEach((tag) => {
+    newPromptRef.child('tags').push(tag);
+  });
+
+  usersRef.child(`${username}`).child('promptsCreated').push(newPromptRef.key);
+
+  // should return the key for the new prompt
+  return newPromptRef.key;
+};
 
 // const addAnswer = async () => {
 
@@ -76,11 +102,11 @@ const addUsername = async (username) => {
 
 // };
 
-
-
 module.exports = {
-  saveData,
+  // saveData,
   getAll,
   getUsername,
+  // getPrompts,
   addUsername,
+  addPrompt,
 };
