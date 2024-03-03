@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
 
 const admin = require('firebase-admin');
 
@@ -27,15 +28,6 @@ const ref = db.ref('data');
 const usersRef = db.ref('data/users');
 const promptRef = db.ref('data/prompts');
 
-// Intend to make current implemented functions use this method (on)
-// instead of calling firebase
-// let usersSnapshot;
-
-// usersRef.on('value', (snapshot) => {
-//   usersSnapshot = snapshot.val();
-//   console.log('New Users SNAPSHOT');
-// });
-
 const getAll = async () => {
   //   ref.once('value', (snapshot) => {
   //     console.log(snapshot.val());
@@ -54,9 +46,26 @@ const getUsername = async (username) => {
   return null;
 };
 
+const getUnusedUsername = async () => {
+  let randomName;
+  do {
+    randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
+    console.log('In firebase unused username loop');
+  } while (await getUsername(randomName));
+
+  return { username: randomName };
+};
+
 // unimplemented
-// const getPrompts = async () => {
-//   const snapshot = (await promptRef.once('value'));
+// 
+const getPrompts = async () => {
+  const snapshot = (await promptRef.orderByChild('timestamp').once('value'));
+
+  return snapshot.val();
+};
+
+// const getAnswersToPrompt = async () => {
+
 // };
 
 const addUsername = async (username) => {
@@ -77,6 +86,8 @@ const addPrompt = async (text, tags, username) => {
     tags: '',
     answers: '',
     createdBy: username,
+    likes: 0,
+    timestamp: admin.database.ServerValue.TIMESTAMP,
   });
   // needs text, tags, and username
 
@@ -94,19 +105,12 @@ const addPrompt = async (text, tags, username) => {
 
 // };
 
-// const getPrompts = async () => {
-
-// };
-
-// const getAnswersToPrompt = async () => {
-
-// };
-
 module.exports = {
   // saveData,
   getAll,
   getUsername,
-  // getPrompts,
+  getUnusedUsername,
+  getPrompts,
   addUsername,
   addPrompt,
 };

@@ -13,11 +13,14 @@ const urlStruct = {
     // HTML pages
     '/': htmlHandler.getIndex,
     '/index': htmlHandler.getIndex,
+    '/answersPage': htmlHandler.getAnswersPage,
+    '/answersPage.html': htmlHandler.getAnswersPage,
     '/notFound': htmlHandler.getNotFound,
 
     // CSS files
     '/bulma.css': htmlHandler.getBulma,
     '/style.css': htmlHandler.getIndexCSS,
+    '/answersPage.css': htmlHandler.getAnswersPageCSS,
     '/notFound.css': htmlHandler.getNotFoundCSS,
 
     // Javascript files
@@ -27,7 +30,8 @@ const urlStruct = {
     // JSON or Firebase Requests
     '/getAll': jsonHandler.getAll,
     '/getUser': jsonHandler.getUser, //
-    // '/getPrompts': jsonHandler.,//
+    '/getUnusedUsername': jsonHandler.getUnusedUsername, //
+    '/getPrompts': jsonHandler.getPrompts,//
     // '/getPrompt': , //
 
     // Other files
@@ -35,7 +39,8 @@ const urlStruct = {
   },
   HEAD: {
     '/getUser': jsonHandler.getUserHEAD, //
-    // '/getPrompts': jsonHandler.,//
+    '/getUnusedUsername': jsonHandler.getUnusedUsernameHEAD, //
+    '/getPrompts': jsonHandler.getPromptsHead,//
 
   },
   POST: {
@@ -91,8 +96,6 @@ const onRequest = (request, response) => {
   } else {
     urlStruct.GET['/notFound'](request, response);
   }
-
-  // urlStruct['/'](request, response);
 };
 
 http.createServer(onRequest).listen(port, () => {

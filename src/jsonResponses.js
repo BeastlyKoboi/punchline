@@ -43,12 +43,48 @@ const getUserHEAD = async (request, response, query) => {
   utils.respond(request, response, 404);
 };
 
-// const getPrompts = async () => {
+const getUnusedUsername = async (request, response) => {
+  const newUsername = await firebase.getUnusedUsername();
+  
+  if (newUsername) {
+    utils.respond(request, response, 200, JSON.stringify(newUsername));
+    return;
+  }
 
-// };
-// const getPromptsHead = async () => {
+  utils.respond(request, response, 500);
+};
 
-// };
+const getUnusedUsernameHEAD = async (request, response) => {
+  const newUsername = await firebase.getUnusedUsername();
+  
+  if (newUsername) {
+    utils.respond(request, response, 204);
+    return;
+  }
+
+  utils.respond(request, response, 500);
+};
+
+const getPrompts = async (request, response, query) => {
+  const prompts = await firebase.getPrompts();
+
+  if (prompts) {
+    utils.respond(request, response, 200, JSON.stringify(prompts));
+    return;
+  }
+
+  utils.respond(request, response, 404);
+};
+const getPromptsHead = async () => {
+  const prompts = await firebase.getPrompts();
+
+  if (prompts) {
+    utils.respond(request, response, 204);
+    return;
+  }
+
+  utils.respond(request, response, 404);
+};
 
 const addUser = async (request, response, params) => {
   if (!params.username) {
@@ -86,6 +122,10 @@ module.exports = {
   getAll,
   getUser,
   getUserHEAD,
+  getUnusedUsername,
+  getUnusedUsernameHEAD,
+  getPrompts,
+  getPromptsHead,
   addUser,
   addPrompt,
 };

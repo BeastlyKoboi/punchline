@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./style.css">
 
     <script type="module" src="./prompts.js"></script>
+
 </head>
 
 <body>
@@ -49,19 +50,62 @@
 
                 <div class="navbar-end">
                     <div class="navbar-item">
-                        <div class="control">
+                        <!-- <div class="control">
                             <input id="input-username" class="input is-rounded is-danger" type="text"
                                 placeholder="Username">
-                        </div>
+                        </div> -->
                         <!-- <button class="button is-primary ">Submit</button> -->
                     </div>
                 </div>
             </div>
         </nav>
 
+        <div id="username-modal" class="modal is-active">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title"></p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="content">
+                        <h1 class="has-text-centered">Welcome to Punchline!</h1>
+                        <p>
+                            This is a website where you can collaborate to crack wise and create comedy. If you
+                            considered
+                            that line corny, then come on in, clean off your creative cobwebs, and convey you are
+                            without
+                            compare!
+                        </p>
+                        <h2 class="has-text-centered">BUT WAIT...</h2>
+                        <p>
+                            You need an alias going forward. A TITLE! To pin all of you literary deeds to! I have the
+                            perfect suggestion!
+                        </p>
+                        <div id="username-modal-div" class="has-text-centered">
+                            <progress class="progress is-large is-primary" max="100">60%</progress>
+                            <!-- <h2>Placeholder</h2> -->
+                        </div>
+                        <p>If you don't love that (seems impossible in my opinion) or if you are already a user, put in
+                            your own!</p>
+                        <div class="control">
+                            <input id="input-username" class="input is-rounded is-link" type="text"
+                                placeholder="Username" value="">
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot is-justify-content-center">
+                    <button id="modal-btn" class="button is-large is-success">Continue</button>
+
+                    <!-- <button class="button">Cancel</button> -->
+                </footer>
+            </div>
+        </div>
+
+
         <div id="prompt-cards">
 
-            <div id="add-prompt-card" class="card">
+            <!-- <div id="add-prompt-card" class="card">
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
@@ -80,7 +124,7 @@
                                 <option>Historical Quotes</option>
                             </select>
                         </div>
-                        <textarea class="textarea" placeholder="e.g. Hello world"></textarea>
+                        <textarea class="textarea" placeholder="a future setup..."></textarea>
                     </div>
                 </div>
 
@@ -106,9 +150,6 @@
                             <span class="tag is-6 is-danger">Tags</span>
                         </div>
                         <div class="media-right has-text-right">
-                            <!-- <figure class="image is-48x48">
-                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                            </figure> -->
                             <p class="subtitle is-6">By Username</p>
                         </div>
                     </div>
@@ -138,9 +179,6 @@
                             <span class="tag is-6 is-danger">Tags</span>
                         </div>
                         <div class="media-right has-text-right">
-                            <!-- <figure class="image is-48x48">
-                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                            </figure> -->
                             <p class="subtitle is-6">By Username</p>
                         </div>
                     </div>
@@ -153,11 +191,10 @@
                         </span>
                     </button>
                 </footer>
-            </div>
-
-
+            </div> -->
 
         </div>
+
 
         <div id="data">
 
