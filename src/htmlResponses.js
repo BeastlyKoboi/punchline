@@ -11,6 +11,7 @@ const bulma = fs.readFileSync(`${__dirname}/../node_modules/bulma/css/bulma.css`
 
 const requestsJS = fs.readFileSync(`${__dirname}/../client/js/requests.js`);
 const promptsJS = fs.readFileSync(`${__dirname}/../client/js/prompts.js`);
+const answersJS = fs.readFileSync(`${__dirname}/../client/js/answers.js`);
 
 const getIndex = (request, response) => {
   utils.respond(request, response, 200, index, 'text/html');
@@ -48,14 +49,19 @@ const getPromptsJS = (request, response) => {
   utils.respond(request, response, 200, promptsJS, 'application/javascript');
 };
 
+const getAnswersJS = (request, response) => {
+  utils.respond(request, response, 200, answersJS, 'application/javascript');
+};
+
 module.exports = {
   getIndex,
   getIndexCSS,
-  getAnswersPage, 
+  getAnswersPage,
   getAnswersPageCSS,
   getNotFound,
   getNotFoundCSS,
   getBulma,
   getRequestsJS,
   getPromptsJS,
+  getAnswersJS,
 };

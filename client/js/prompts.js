@@ -1,45 +1,17 @@
 import * as requests from "./requests.js";
 
-let usernameInput;
-
 let currUsername;
 let currUserInfo;
 
 let promptTags = ['Pick Up Lines', 'Outrageous Insults', 'So You Got Jokes', 'CHUCK NORRIS', 'Historical Quotes'];
 
-const handleResponse = (response) => {
+const handleTestData = (response) => {
 
     response.text().then(responseText => {
         const content = document.querySelector('#data');
 
         const h1 = document.createElement('h1');
         const p = document.createElement('p');
-
-        // switch (response.status) {
-        //     case 200:
-        //         h1.innerText = 'Success';
-        //         p.innerText = responseText;
-        //         break;
-        //     case 201:
-        //         h1.innerText = 'Created';
-        //         p.innerText = `Message: ${JSON.parse(responseText).message}`;
-        //         break;
-        //     case 204:
-        //         h1.innerText = 'Updated (No Content)';
-        //         break;
-        //     case 400:
-        //         h1.innerText = 'Bad Request';
-        //         p.innerText = `Message: ${JSON.parse(responseText).message}`;
-        //         break;
-        //     case 404:
-        //         h1.innerText = 'Not Found';
-        //         if (responseText)
-        //             p.innerText = `Message: ${JSON.parse(responseText).message}`;
-        //         break;
-        //     default:
-        //         h1.innerText = 'Not Sure';
-        //         break;
-        // }
 
         h1.innerText = 'Data';
         p.innerText = `${responseText}`;
@@ -137,7 +109,7 @@ const createAddPromptCard = (username) => {
     return addPromptCard;
 }
 
-const createPromptCard = (username, prompt, answer) => {
+const createPromptCard = (username, prompt, answer, tags) => {
     // Create outer card 
     const cardDiv = document.createElement('div');
     cardDiv.classList.add('card');
@@ -157,7 +129,7 @@ const createPromptCard = (username, prompt, answer) => {
 
     // If top answer is submitted, add it to card
     if (answer) {
-        answerDiv.innerText = answer;
+        answerDiv.innerText = 'Click to see some answers!';
     }
     else {
         answerDiv.classList.add('has-text-centered');
@@ -178,8 +150,8 @@ const createPromptCard = (username, prompt, answer) => {
 
     // Create tag span inside media content div
     const tagSpan = document.createElement('span');
-    tagSpan.classList.add('tag', 'is-6', 'is-danger');
-    tagSpan.textContent = "Tags";
+    tagSpan.classList.add('tag', 'is-6', 'is-success');
+    tagSpan.textContent = Object.values(tags)[0];
 
     // Append tag span to media content div
     mediaContentDiv.appendChild(tagSpan);
@@ -200,31 +172,31 @@ const createPromptCard = (username, prompt, answer) => {
     mediaDiv.appendChild(mediaContentDiv);
     mediaDiv.appendChild(mediaRightDiv);
 
-    // Create footer 
-    const footerElement = document.createElement('footer');
-    footerElement.classList.add('card-footer');
+    // // Create footer 
+    // const footerElement = document.createElement('footer');
+    // footerElement.classList.add('card-footer');
 
-    // Create button 
-    const buttonElement = document.createElement('button');
-    buttonElement.classList.add('button', 'is-large', 'card-footer-item');
+    // // Create button 
+    // const buttonElement = document.createElement('button');
+    // buttonElement.classList.add('button', 'is-large', 'card-footer-item');
 
-    // Create like icon span inside button 
-    const iconSpan = document.createElement('span');
-    iconSpan.classList.add('icon');
-    const iconElement = document.createElement('i');
-    iconElement.classList.add('fa-regular', 'fa-heart');
-    iconSpan.appendChild(iconElement);
-    buttonElement.appendChild(iconSpan);
+    // // Create like icon span inside button 
+    // const iconSpan = document.createElement('span');
+    // iconSpan.classList.add('icon');
+    // const iconElement = document.createElement('i');
+    // iconElement.classList.add('fa-regular', 'fa-heart');
+    // iconSpan.appendChild(iconElement);
+    // buttonElement.appendChild(iconSpan);
 
     // Append button to footer
-    footerElement.appendChild(buttonElement);
+    // footerElement.appendChild(buttonElement);
 
     // Append all created elements to main card div
     cardContentDiv.appendChild(promptDiv);
     cardContentDiv.appendChild(answerDiv);
     cardContentDiv.appendChild(mediaDiv);
     cardDiv.appendChild(cardContentDiv);
-    cardDiv.appendChild(footerElement);
+    // cardDiv.appendChild(footerElement);
 
     return cardDiv;
 };
@@ -240,18 +212,27 @@ const refreshPage = async () => {
     promptsDiv.appendChild(createAddPromptCard(currUsername));
 
     requests.sendGet('./getPrompts', async (response) => {
-        promptsDiv.rev
         const prompts = await response.json();
         // console.log(prompts);
         for (let key in prompts) {
-            promptsDiv.appendChild(createPromptCard(prompts[key].createdBy, prompts[key].text, prompts[key].answers));
+            const newCard = createPromptCard(prompts[key].createdBy, prompts[key].text, prompts[key].answers, prompts[key].tags);
+            newCard.setAttribute('key', key);
+            newCard.addEventListener('click', (e) => {
+                const promptKey = e.currentTarget.getAttribute('key');
+
+                window.location = '/answersPage.html?' + new URLSearchParams({
+                    username: currUsername,
+                    promptKey: promptKey
+                });
+            });
+
+            promptsDiv.appendChild(newCard);
         }
     });
 
     let addPromptBtn = document.getElementById('add-prompt-btn');
     addPromptBtn.addEventListener('click', addPrompt);
 };
-
 
 const changeCurrentUsername = async (newUsername) => {
 
@@ -271,6 +252,8 @@ const changeCurrentUsername = async (newUsername) => {
         currUserInfo = await postResponse.text();
     }
 
+    localStorage.setItem('arf7094-punchline-username', currUsername);
+
     console.log(currUserInfo);
 };
 
@@ -288,10 +271,14 @@ const addPrompt = async (e) => {
         tags: [tag],
         createdBy: currUsername,
     }));
-
 };
 
 const InitModal = async () => {
+    if (localStorage.getItem('arf7094-punchline-username')) {
+        let usernameInput = document.getElementById('input-username');
+        usernameInput.value = localStorage.getItem('arf7094-punchline-username');
+    }
+
     // Get sample username 
     let randomUsernamePromise = await requests.sendGet('./getUnusedUsername');
     let randomUsername = (await randomUsernamePromise.json()).username;
@@ -321,7 +308,6 @@ const InitModal = async () => {
 }
 
 const init = async () => {
-
     // Makes the burger toggle work on phones screens
     document.querySelector('.navbar-burger').addEventListener('click', (e) => {
         let burger = e.target;
@@ -332,7 +318,7 @@ const init = async () => {
 
     await InitModal();
 
-    requests.sendGet('./getAll', handleResponse);
+    // requests.sendGet('./getAll', handleTestData);
 }
 
 init();

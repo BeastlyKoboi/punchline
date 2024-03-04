@@ -1,5 +1,7 @@
 require('dotenv').config();
-const { uniqueNamesGenerator, adjectives, colors, animals } = require('unique-names-generator');
+const {
+  uniqueNamesGenerator, adjectives, colors, animals,
+} = require('unique-names-generator');
 
 const admin = require('firebase-admin');
 
@@ -29,10 +31,6 @@ const usersRef = db.ref('data/users');
 const promptRef = db.ref('data/prompts');
 
 const getAll = async () => {
-  //   ref.once('value', (snapshot) => {
-  //     console.log(snapshot.val());
-  //     allData = snapshot.val();
-  //   });
   const allData = (await ref.once('value')).val();
 
   return allData;
@@ -46,27 +44,37 @@ const getUsername = async (username) => {
   return null;
 };
 
+/**
+ * Returns a randomly generated username from the unique-names-generator package
+ * Assumes that firebase does not have it, since I encountered issues with linting.
+ * Commented out portion gets error 'Unexpected `await` inside a loop'
+ * @returns an object containing the random name
+ */
 const getUnusedUsername = async () => {
-  let randomName;
-  do {
-    randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
-    console.log('In firebase unused username loop');
-  } while (await getUsername(randomName));
+  const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
+  // do {
+  //   randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] });
+  //   console.log('In firebase unused username loop');
+  // } while (await getUsername(randomName));
 
   return { username: randomName };
 };
 
 // unimplemented
-// 
+//
 const getPrompts = async () => {
   const snapshot = (await promptRef.orderByChild('timestamp').once('value'));
 
   return snapshot.val();
 };
 
-// const getAnswersToPrompt = async () => {
+const getPrompt = async (promptKey) => {
+  const snapshot = (await promptRef.once('value'));
 
-// };
+  if (snapshot.child(`${promptKey}`).exists()) return snapshot.child(`${promptKey}`).val();
+
+  return null;
+};
 
 const addUsername = async (username) => {
   usersRef.child(`${username}`).set({
@@ -101,9 +109,20 @@ const addPrompt = async (text, tags, username) => {
   return newPromptRef.key;
 };
 
-// const addAnswer = async () => {
+const addAnswer = async (promptKey, text, username) => {
+  const newAnswerRef = promptRef.child(`${promptKey}`).child('answers').push();
 
-// };
+  newAnswerRef.set({
+    text,
+    likes: 0,
+    createdBy: username,
+    timestamp: admin.database.ServerValue.TIMESTAMP,
+  });
+
+  usersRef.child(`${username}`).child('promptsAnswered').push(newAnswerRef.key);
+
+  return newAnswerRef.key;
+};
 
 module.exports = {
   // saveData,
@@ -111,6 +130,8 @@ module.exports = {
   getUsername,
   getUnusedUsername,
   getPrompts,
+  getPrompt,
   addUsername,
   addPrompt,
+  addAnswer,
 };

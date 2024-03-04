@@ -26,13 +26,14 @@ const urlStruct = {
     // Javascript files
     '/requests.js': htmlHandler.getRequestsJS,
     '/prompts.js': htmlHandler.getPromptsJS,
+    '/answers.js': htmlHandler.getAnswersJS,
 
     // JSON or Firebase Requests
     '/getAll': jsonHandler.getAll,
     '/getUser': jsonHandler.getUser, //
     '/getUnusedUsername': jsonHandler.getUnusedUsername, //
-    '/getPrompts': jsonHandler.getPrompts,//
-    // '/getPrompt': , //
+    '/getPrompts': jsonHandler.getPrompts, //
+    '/getPrompt': jsonHandler.getPrompt, //
 
     // Other files
     '/error.jpeg': mediaHandler.getErrorMeme,
@@ -40,13 +41,13 @@ const urlStruct = {
   HEAD: {
     '/getUser': jsonHandler.getUserHEAD, //
     '/getUnusedUsername': jsonHandler.getUnusedUsernameHEAD, //
-    '/getPrompts': jsonHandler.getPromptsHead,//
-
+    '/getPrompts': jsonHandler.getPromptsHead, //
+    '/getPrompt': jsonHandler.getPromptHEAD, //
   },
   POST: {
     '/addUser': jsonHandler.addUser, // 201 with 400 if user exists
     '/addPrompt': jsonHandler.addPrompt, // 201 with 400 if not all parameters given
-    // '/addAnswer': , // 201 with 400 if prompt does not exist
+    '/addAnswer': jsonHandler.addAnswer, // 201 with 400 if prompt does not exist
   },
 };
 
