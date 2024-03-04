@@ -60,8 +60,6 @@ const getUnusedUsername = async () => {
   return { username: randomName };
 };
 
-// unimplemented
-//
 const getPrompts = async () => {
   const snapshot = (await promptRef.orderByChild('timestamp').once('value'));
 

@@ -7,6 +7,13 @@ const getAll = async (request, response) => {
   utils.respond(request, response, 200, JSON.stringify(data));
 };
 
+/**
+ * Get a specific user given a username
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} query needs username param
+ * @returns 
+ */
 const getUser = async (request, response, query) => {
   if (!query.username) {
     utils.respond(request, response, 400, JSON.stringify({
@@ -43,6 +50,12 @@ const getUserHEAD = async (request, response, query) => {
   utils.respond(request, response, 404);
 };
 
+/**
+ * Returns a randomly generated username
+ * @param {*} request 
+ * @param {*} response 
+ * @returns 
+ */
 const getUnusedUsername = async (request, response) => {
   const newUsername = await firebase.getUnusedUsername();
 
@@ -53,7 +66,6 @@ const getUnusedUsername = async (request, response) => {
 
   utils.respond(request, response, 500);
 };
-
 const getUnusedUsernameHEAD = async (request, response) => {
   const newUsername = await firebase.getUnusedUsername();
 
@@ -65,6 +77,12 @@ const getUnusedUsernameHEAD = async (request, response) => {
   utils.respond(request, response, 500);
 };
 
+/**
+ * Returns all prompts saved to firebase.
+ * @param {*} request 
+ * @param {*} response 
+ * @returns 
+ */
 const getPrompts = async (request, response) => {
   const prompts = await firebase.getPrompts();
 
@@ -86,6 +104,13 @@ const getPromptsHead = async (request, response) => {
   utils.respond(request, response, 404);
 };
 
+/**
+ * Returns a specific prompt given a valid key. 
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} params 
+ * @returns 
+ */
 const getPrompt = async (request, response, params) => {
   if (!params.promptKey) {
     utils.respond(request, response, 400, JSON.stringify({
@@ -104,6 +129,13 @@ const getPrompt = async (request, response, params) => {
   utils.respond(request, response, 404);
 };
 const getPromptHEAD = async (request, response, params) => {
+  if (!params.promptKey) {
+    utils.respond(request, response, 400, JSON.stringify({
+      message: 'Invalid: must provide a prompt key',
+    }));
+    return;
+  }
+
   const prompt = await firebase.getPrompt(params.promptKey);
 
   if (prompt) {
@@ -114,6 +146,13 @@ const getPromptHEAD = async (request, response, params) => {
   utils.respond(request, response, 404);
 };
 
+/**
+ * Creates an new user with new info and returns it.
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} params 
+ * @returns 
+ */
 const addUser = async (request, response, params) => {
   if (!params.username) {
     utils.respond(request, response, 400, JSON.stringify({
@@ -127,6 +166,13 @@ const addUser = async (request, response, params) => {
   utils.respond(request, response, 201, user);
 };
 
+/**
+ * Add adds a new prompt to firebase, given all the stuff it needs is given. 
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} params 
+ * @returns 
+ */
 const addPrompt = async (request, response, params) => {
   if (!params.text || !params.tags || !params.createdBy) {
     utils.respond(request, response, 400, JSON.stringify({
@@ -146,6 +192,13 @@ const addPrompt = async (request, response, params) => {
   utils.respond(request, response, 201, promptKey);
 };
 
+/**
+ * Adds a new answer to a specific prompt, given that the params are all there. 
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} params 
+ * @returns 
+ */
 const addAnswer = async (request, response, params) => {
   if (!params.promptKey || !params.text || !params.createdBy) {
     utils.respond(request, response, 400, JSON.stringify({

@@ -175,6 +175,11 @@ const refreshPage = async () => {
     addAnswerBtn.addEventListener('click', addAnswer);
 };
 
+/**
+ * Validates and sends new request to api to add new answer to specific prompt. 
+ * @param {*} e 
+ * @returns 
+ */
 const addAnswer = async (e) => {
     let newPromptCard = document.getElementById('add-prompt-card');
 
