@@ -59,4 +59,4 @@ typings/
 
 # Replit stuff
 .replit
-.nix
+replit.nix
